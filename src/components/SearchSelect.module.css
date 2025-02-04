@@ -1,0 +1,21 @@
+.searchSelectContainer {
+  height: 40px;
+  padding-left: 16px;
+  padding-right: 14px;
+  cursor: pointer;
+  line-height: 40px;
+  border-radius: 30px;
+}
+.searchSelectContainer:hover {
+  background-color: #f2f2f2;
+}
+
+.arrow {
+  border: 1.25px solid #1f1f1f;
+  border-right: none;
+  border-top: none;
+  height: 6.67px;
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
+  width: 6.67px;
+}
