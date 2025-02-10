@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: "CircularStd";
+  src: url("/fonts/circular-std-medium-500.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   --background: #f5f7f9;
@@ -104,6 +110,9 @@
     border-style: solid;
     border-color: var(--color-ref-neutral);
   }
+  img {
+    height: inherit;
+  }
 }
 
 @layer components {
@@ -123,10 +132,6 @@
 
   .button-primary:disabled {
     @apply bg-neutral-3 cursor-not-allowed;
-  }
-
-  .button-primary-out {
-    @apply cursor-pointer w-auto px-12 h-40 bg-white text-primary text-sm rounded-sm inline-flex items-center justify-center align-middle border border-primary transition-colors hover:bg-primary-light;
   }
 
   .button-primary-out:disabled {

@@ -1,13 +1,9 @@
 "use client";
 import { Button, Modal, Input } from "antd";
 import { useState, useImperativeHandle, forwardRef } from "react";
+import { DialogActions } from "@/types/dialog";
 
-interface ChildComponentRef {
-  closeDialog: () => void;
-  openDialog: () => void;
-}
-
-const LoginDia = forwardRef<ChildComponentRef, {}>((_, ref) => {
+const LoginDia = forwardRef<DialogActions, {}>((_, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   function closeDialog() {
     setIsModalOpen(false);
