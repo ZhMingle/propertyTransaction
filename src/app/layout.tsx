@@ -34,7 +34,13 @@ export default function RootLayout({
         <ConfigProvider
           theme={{
             token: {
-              colorBorder: "#ffe60f",
+              colorBorder: "#e1e1e1",
+            },
+            components: {
+              Button: {
+                colorPrimary: "var(--color-ref-orange)",
+                colorPrimaryHover: "var(--color-ref-orange2)",
+              },
             },
           }}
         >

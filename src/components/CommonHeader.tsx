@@ -2,6 +2,8 @@
 import { Input } from "antd";
 import { DownOutlined, SearchOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import LoginDialog from "./loginDialog/LoginDialog";
 
 const { Search } = Input;
 import type { GetProps } from "antd";
@@ -16,7 +18,12 @@ function goHome(e: React.MouseEvent<HTMLAnchorElement>, router: any) {
   router.push("/");
 }
 export default function BB({ className }: MyComponentProps) {
+  const [HasLoged, setHasLog] = useState(false);
   const router = useRouter();
+  const dialogRef = useRef<{
+    closeDialog: () => void;
+    openDialog: () => void;
+  } | null>(null);
   return (
     <header className={styles.headerContainer}>
       <div className={`${styles.logo} cursor-pointer`}>
@@ -52,12 +59,17 @@ export default function BB({ className }: MyComponentProps) {
           Search properties
         </span>
 
-        <div className="overflow-hidden flex-shrink-0 rounded-full !w-32 !h-32 lg:!w-48 lg:!h-48">
-          <img
-            className="w-full h-full block object-cover object-[center_top] rounded-half"
-            src="https://lh3.googleusercontent.com/a/ACg8ocKtSAhocIDuAa2OdvXNSV6KwZ6-A7HuhyI6Tfp8-D1ZUsLFtQ=s96-c"
-          />
-        </div>
+        {HasLoged ? (
+          <div className="overflow-hidden flex-shrink-0 rounded-full !w-32 !h-32 lg:!w-48 lg:!h-48">
+            <img
+              className="w-full h-full block object-cover object-[center_top] rounded-half"
+              src="https://lh3.googleusercontent.com/a/ACg8ocKtSAhocIDuAa2OdvXNSV6KwZ6-A7HuhyI6Tfp8-D1ZUsLFtQ=s96-c"
+            />
+          </div>
+        ) : (
+          <div onClick={() => dialogRef.current?.openDialog()}>Log in</div>
+        )}
+        <LoginDialog ref={dialogRef} />
       </div>
     </header>
   );

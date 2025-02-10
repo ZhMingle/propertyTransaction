@@ -110,38 +110,84 @@
   .button-orange {
     @apply cursor-pointer w-auto px-12 h-40 bg-orange text-white text-sm rounded-sm inline-flex items-center justify-center align-middle transition-colors hover:bg-orange-pressed;
   }
-}
-input[type="button"],
-button {
-  padding: 0;
-  border-width: 0;
-  background-color: transparent;
-  cursor: pointer;
+  input[type="button"],
+  button {
+    padding: 0;
+    border-width: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .button-primary {
+    @apply cursor-pointer w-auto px-12 h-40 bg-primary text-white text-sm rounded-sm inline-flex items-center justify-center align-middle transition-colors hover:bg-primary-pressed;
+  }
+
+  .button-primary:disabled {
+    @apply bg-neutral-3 cursor-not-allowed;
+  }
+
+  .button-primary-out {
+    @apply cursor-pointer w-auto px-12 h-40 bg-white text-primary text-sm rounded-sm inline-flex items-center justify-center align-middle border border-primary transition-colors hover:bg-primary-light;
+  }
+
+  .button-primary-out:disabled {
+    @apply border-neutral-3 text-neutral-3 bg-white cursor-not-allowed;
+  }
+
+  .button-text-primary {
+    @apply cursor-pointer text-primary hover:text-primary-pressed hover:drop-shadow-md;
+  }
+
+  .button-orange {
+    @apply cursor-pointer w-auto px-12 h-40 bg-orange text-white text-sm rounded-sm inline-flex items-center justify-center align-middle transition-colors hover:bg-orange-pressed;
+  }
+  .button-orange:disabled {
+    @apply bg-neutral-3 cursor-not-allowed;
+  }
+
+  .rich-text {
+    @apply space-y-24 childs-[a]:text-primary childs-[a]:underline childs-[*]:max-w-full;
+  }
+
+  select,
+  input,
+  textarea {
+    outline: none;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    outline: none;
+    background-color: transparent;
+  }
+
+  input,
+  button {
+    font-weight: 200;
+    font-family: var(--font-ssp);
+    font-size: inherit;
+    -webkit-appearance: none;
+  }
+
+  input:disabled,
+  input:disabled::placeholder,
+  textarea:disabled,
+  textarea:disabled::placeholder {
+    -webkit-text-fill-color: var(--color-ref-neutral4);
+    opacity: 1;
+  }
 }
 
-select,
-input,
-textarea {
-  outline: none;
-  margin: 0;
-  padding: 0;
-  border-width: 0;
-  outline: none;
-  background-color: transparent;
-}
-
-input,
-button {
-  font-weight: 200;
-  font-family: var(--font-ssp);
-  font-size: inherit;
-  -webkit-appearance: none;
-}
-
-input:disabled,
-input:disabled::placeholder,
-textarea:disabled,
-textarea:disabled::placeholder {
-  -webkit-text-fill-color: var(--color-ref-neutral4);
-  opacity: 1;
+@layer utilities {
+  .page-wrap,
+  .section-wrap {
+    transition: padding 0.25s ease-out 0s;
+    max-width: 100%;
+    padding-left: var(--container-pd);
+    padding-right: var(--container-pd);
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .section-wrap {
+    width: calc(1120px + var(--container-pd) * 2);
+  }
 }
