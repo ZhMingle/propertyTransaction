@@ -7,7 +7,7 @@ const Dialog = forwardRef<DialogActions>((props, ref) => {
     console.log("888");
 
     dialogRef.current?.close();
-    document.body.style.overflow = "";
+    document.body.style.overflow = "auto";
   };
   useImperativeHandle(ref, () => ({
     openDialog: () => {
@@ -108,6 +108,7 @@ const Dialog = forwardRef<DialogActions>((props, ref) => {
             <CloseOutlined className="icon icon-close text-primary transition-transform pointer-events-none group-hover:rotate-90 font-bold !text-lg" />
           </button>
         </div>
+        <div className="flex-1 min-h-0 grid grid-cols-1 grid-rows-[1fr,auto] p-10 md:p-20 md:grid-cols-[1fr,auto] overflow-auto relative"></div>
       </div>
     </dialog>
   );

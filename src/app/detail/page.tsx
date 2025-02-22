@@ -123,7 +123,7 @@ export default function Detail() {
                 </div>
                 <div className="flex items-center text-neutral-5">
                   <Image
-                    src="/detail_icon/bed.svg"
+                    src="/detail_icon/total_area.svg"
                     alt="bed"
                     width={24}
                     height={24}
