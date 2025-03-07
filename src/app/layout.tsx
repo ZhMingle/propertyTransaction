@@ -6,6 +6,7 @@ import { ConfigProvider } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import CommonHeader from "@/components/CommonHeader";
 import CommonFooter from "@/components/CommonFooter";
+import "@ant-design/v5-patch-for-react-19";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
