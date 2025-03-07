@@ -1,0 +1,7 @@
+.sectionWrap {
+  transition: padding 0.25s ease-out 0s;
+  max-width: 100%;
+  padding: 0 var(--container-pd);
+  box-sizing: border-box;
+  margin: 0 auto;
+}
