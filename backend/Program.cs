@@ -2,6 +2,9 @@ using backend.Data;
 using backend.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,7 +31,24 @@ builder.Services.AddScoped<PropertyService>(); // 注册 PropertyService
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 添加 JWT 认证
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidateAudience = true,
+            ValidAudience = jwtSettings["Audience"],
+            ValidateLifetime = true
+        };
+    });
 
 var app = builder.Build();
 
@@ -43,6 +63,7 @@ app.UseCors("AllowLocalhost");  // 应用 CORS 策略
 
 
 app.UseStaticFiles();  // start static file service
+app.UseDeveloperExceptionPage(); //  启用详细错误日志
 app.UseAuthorization();
 
 app.MapControllers();

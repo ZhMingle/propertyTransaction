@@ -3,77 +3,95 @@ import { Button, Modal, Input } from "antd";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import { DialogActions } from "@/types/dialog";
 import { ethers } from "ethers";
-import axios from "axios";
+import { getNonce, signMessage, verifySignature } from "@/fetch/authService";
+import useMessage from "@/hooks/MessageHook";
 
-const LoginDia = forwardRef<DialogActions, {}>((_, ref) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  function closeDialog() {
-    setIsModalOpen(false);
-  }
-  function openDialog() {
-    setIsModalOpen(true);
-  }
-  useImperativeHandle(ref, () => ({
-    closeDialog,
-    openDialog,
-  }));
-  const [walletAddress, setWalletAddress] = useState("");
-  const [message, setMessage] = useState("");
-  const [jwt, setJwt] = useState("");
+interface LoginDiaProps {
+  onWalletChange: (isConnected: boolean) => void;
+}
 
-  // 1. 连接 MetaMask
-  async function connectWallet() {
-    if (!window.ethereum) {
-      alert("Please install MetaMask");
-      return;
+const LoginDia = forwardRef<DialogActions, LoginDiaProps>(
+  ({ onWalletChange }, ref) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const Msg = useMessage();
+    function closeDialog() {
+      setIsModalOpen(false);
     }
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const address = await signer.getAddress();
-    setWalletAddress(address);
+    function openDialog() {
+      setIsModalOpen(true);
+    }
+    useImperativeHandle(ref, () => ({
+      closeDialog,
+      openDialog,
+    }));
+    const [walletAddress, setWalletAddress] = useState("");
+    const [message, setMessage] = useState("");
+    const [jwt, setJwt] = useState("");
 
-    // 2. 请求服务器获取 nonce
-    const { data } = await axios.get(`/api/auth/nonce?address=${address}`);
-    const nonce = data.nonce;
-    setMessage(nonce);
+    /** 连接钱包并进行身份验证 */
+    async function connectWallet() {
+      try {
+        if (!window.ethereum) {
+          alert("Please install MetaMask");
+          return;
+        }
 
-    // 3. 使用钱包签名
-    const signature = await signer.signMessage(nonce);
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const address = await signer.getAddress();
 
-    // 4. 将签名发给后端验证
-    const response = await axios.post("/api/auth/verify", {
-      address,
-      signature,
-    });
+        setWalletAddress(address);
 
-    setJwt(response.data.token);
-    alert("Login successful! JWT saved.");
-  }
-  return (
-    <Modal open={isModalOpen} onCancel={closeDialog} footer={null}>
-      <div className="text-font mb-20 text-center text-1xl sm:text-3xl">
-        Welcome to OneRoof
-      </div>
+        // 获取 nonce
+        const nonce = await getNonce(address);
 
-      <div className="flex flex-col gap-16 mb-20">
-        <div className="flex">
-          {walletAddress ? (
-            <p className="text-green-500">Connected: {walletAddress}</p>
-          ) : (
-            <Button type="primary" className="flex-1" onClick={connectWallet}>
-              Connect Wallet
+        // 签名 nonce
+        const signature = await signMessage(nonce, signer);
+
+        // 发送签名到后端验证
+        const token = await verifySignature(address, signature);
+
+        // 保存 JWT 并通知 UI 变化
+        setJwt(token);
+        onWalletChange(true);
+        Msg.Success("Login successful! JWT saved.");
+      } catch (error) {
+        Msg.Error("Login failed: " + error.message);
+      }
+    }
+
+    const logoutWallet = () => {
+      setWalletAddress("");
+      setMessage("");
+      onWalletChange(false);
+    };
+    return (
+      <Modal open={isModalOpen} onCancel={closeDialog} footer={null}>
+        <div className="text-font mb-20 text-center text-1xl sm:text-3xl">
+          Welcome to OneRoof
+        </div>
+
+        <div className="flex flex-col gap-16 mb-20">
+          <div className="flex">
+            {walletAddress ? (
+              <p className="text-green-500">Connected: {walletAddress}</p>
+            ) : (
+              <Button type="primary" className="flex-1" onClick={connectWallet}>
+                Connect Wallet
+              </Button>
+            )}
+          </div>
+        </div>
+        {jwt && (
+          <div className="flex">
+            <Button type="primary" className="flex-1" onClick={logoutWallet}>
+              logout wallet
             </Button>
-          )}
-        </div>
-      </div>
-      {jwt && (
-        <div className="mt-4">
-          <h3 className="font-bold">JWT Token:</h3>
-          <textarea className="w-full h-24 p-2 border" readOnly value={jwt} />
-        </div>
-      )}
-    </Modal>
-  );
-});
+          </div>
+        )}
+      </Modal>
+    );
+  }
+);
 
 export default LoginDia;

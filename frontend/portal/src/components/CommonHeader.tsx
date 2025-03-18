@@ -17,8 +17,9 @@ function goHome(e: React.MouseEvent<HTMLAnchorElement>, router: any) {
   e.preventDefault();
   router.push("/");
 }
-export default function BB({ className }: MyComponentProps) {
+export default function CommonHeader({ className }: MyComponentProps) {
   const [HasLoged, setHasLog] = useState(false);
+
   const router = useRouter();
   const dialogRef = useRef<{
     closeDialog: () => void;
@@ -60,16 +61,17 @@ export default function BB({ className }: MyComponentProps) {
         </span>
 
         {HasLoged ? (
-          <div className="overflow-hidden flex-shrink-0 rounded-full !w-32 !h-32 lg:!w-48 lg:!h-48">
-            <img
-              className="w-full h-full block object-cover object-[center_top] rounded-half"
-              src="https://lh3.googleusercontent.com/a/ACg8ocKtSAhocIDuAa2OdvXNSV6KwZ6-A7HuhyI6Tfp8-D1ZUsLFtQ=s96-c"
-            />
-          </div>
+          <div
+            className="overflow-hidden flex-shrink-0 rounded-full !w-32 !h-32 lg:!w-48 lg:!h-48 bg-cyan-600"
+            onClick={() => dialogRef.current?.openDialog()}
+          ></div>
         ) : (
           <div onClick={() => dialogRef.current?.openDialog()}>Log in</div>
         )}
-        <LoginDialog ref={dialogRef} />
+        <LoginDialog
+          ref={dialogRef}
+          onWalletChange={(status: boolean) => setHasLog(status)}
+        />
       </div>
     </header>
   );
