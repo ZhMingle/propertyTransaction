@@ -1,4 +1,4 @@
 ﻿public class PropertyStatusUpdateDto {
-    public string Status { get; set; }
+    public PropertyStatus Status { get; set; }
 }
 

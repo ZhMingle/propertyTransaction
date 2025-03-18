@@ -14,7 +14,7 @@ namespace backend.Services {
         }
 
         public async Task<List<Property>> GetAllPropertiesAsync() {
-            return await _context.Properties.Include(p => p.Images).ToListAsync();
+            return await _context.Properties.Include(p => p.Images).OrderByDescending(p => p.CreatedAt).ToListAsync();
         }
 
         public async Task<Property> GetPropertyByIdAsync(int id) {
@@ -26,7 +26,7 @@ namespace backend.Services {
             await _context.SaveChangesAsync();
             return property;
         }
-        public async Task<Property?> UpdatePropertyStatusAsync(int id, string newStatus) {
+        public async Task<Property?> UpdatePropertyStatusAsync(int id, PropertyStatus newStatus) {
             var property = await _context.Properties.FindAsync(id);
             if (property == null) return null;
 
@@ -55,4 +55,5 @@ namespace backend.Services {
             return true;
         }
     }
+
 }
