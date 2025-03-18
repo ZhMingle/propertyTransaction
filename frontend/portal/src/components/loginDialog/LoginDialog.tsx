@@ -63,6 +63,7 @@ const LoginDia = forwardRef<DialogActions, LoginDiaProps>(
     const logoutWallet = () => {
       setWalletAddress("");
       setMessage("");
+      setJwt("");
       onWalletChange(false);
     };
     return (
@@ -85,7 +86,7 @@ const LoginDia = forwardRef<DialogActions, LoginDiaProps>(
         {jwt && (
           <div className="flex">
             <Button type="primary" className="flex-1" onClick={logoutWallet}>
-              logout wallet
+              Logout wallet
             </Button>
           </div>
         )}

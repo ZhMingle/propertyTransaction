@@ -45,7 +45,14 @@ export default function CommonHeader({ className }: MyComponentProps) {
           Find a property&nbsp;
           <DownOutlined />
         </div>
-        <div className="cursor-pointer hover:text-[#53609b]">Estimates</div>
+        <div
+          className="cursor-pointer hover:text-[#53609b]"
+          onClick={() => {
+            router.push("/publish");
+          }}
+        >
+          Publish
+        </div>
         <div className="cursor-pointer hover:text-[#53609b]">News</div>
         <div className="cursor-pointer hover:text-[#53609b]">
           Tools &nbsp;
