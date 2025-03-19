@@ -12,7 +12,7 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250224103008_InitialCreate")]
+    [Migration("20250318224853_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,26 +24,6 @@ namespace backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PropertyImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PropertyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PropertyImages");
-                });
 
             modelBuilder.Entity("backend.Models.Property", b =>
                 {
@@ -79,6 +59,9 @@ namespace backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("TotalArea")
                         .HasColumnType("decimal(18,2)");
 
@@ -110,18 +93,16 @@ namespace backend.Migrations
 
                     b.HasIndex("PropertyId");
 
-                    b.ToTable("PropertyImage");
+                    b.ToTable("PropertyImages");
                 });
 
             modelBuilder.Entity("backend.Models.PropertyImage", b =>
                 {
-                    b.HasOne("backend.Models.Property", "Property")
+                    b.HasOne("backend.Models.Property", null)
                         .WithMany("Images")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Property");
                 });
 
             modelBuilder.Entity("backend.Models.Property", b =>

@@ -56,6 +56,9 @@ namespace backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("TotalArea")
                         .HasColumnType("decimal(18,2)");
 

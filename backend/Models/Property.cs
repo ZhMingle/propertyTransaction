@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
 
 namespace backend.Models {
 	public class Property {
@@ -12,6 +15,7 @@ namespace backend.Models {
 		public int BathroomCount { get; set; }  // 卫生间数量
 		public int ParkingCount { get; set; }  // 车位数量
 		public decimal BuildingArea { get; set; }  // 建筑面积
+		[JsonConverter(typeof(StringEnumConverter))] 
 		public PropertyStatus Status { get; set; } = PropertyStatus.Pending;
 		public decimal TotalArea { get; set; }  // 总面积
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;  // 创建时间

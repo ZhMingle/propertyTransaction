@@ -25,6 +25,7 @@ namespace backend.Migrations
                     BathroomCount = table.Column<int>(type: "int", nullable: false),
                     ParkingCount = table.Column<int>(type: "int", nullable: false),
                     BuildingArea = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     TotalArea = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -39,28 +40,14 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PropertyId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PropertyImages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PropertyImage",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     PropertyId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PropertyImage", x => x.Id);
+                    table.PrimaryKey("PK_PropertyImages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PropertyImage_Properties_PropertyId",
+                        name: "FK_PropertyImages_Properties_PropertyId",
                         column: x => x.PropertyId,
                         principalTable: "Properties",
                         principalColumn: "Id",
@@ -68,17 +55,14 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_PropertyImage_PropertyId",
-                table: "PropertyImage",
+                name: "IX_PropertyImages_PropertyId",
+                table: "PropertyImages",
                 column: "PropertyId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "PropertyImage");
-
             migrationBuilder.DropTable(
                 name: "PropertyImages");
 

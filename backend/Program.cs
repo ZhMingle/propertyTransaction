@@ -5,6 +5,11 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Converters;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +53,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = jwtSettings["Audience"],
             ValidateLifetime = true
         };
+    });
+
+// 添加控制器并使用 Newtonsoft.Json
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options => {
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()); // 枚举转换
     });
 
 var app = builder.Build();
